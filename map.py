@@ -23,7 +23,7 @@ class Tree:
         self.image.clip_draw(80, 288, 32, 40, 300, 40)
         self.image.clip_draw(80, 288, 32, 40, 380, 80)
 
-class Fountain:
+class Fountain: # 수정 필요
     def __init__(self):
         self.image = load_image('Overworld.png')
         self.frame = 350
