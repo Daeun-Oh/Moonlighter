@@ -23,19 +23,19 @@ class Tree:
         self.image.clip_draw(80, 288, 32, 40, 300, 40)
         self.image.clip_draw(80, 288, 32, 40, 380, 80)
 
-class Fountain: # 수정 필요
+class Fountain:
     def __init__(self):
         self.image = load_image('Overworld.png')
-        self.frame = 350
+        self.frame = 352
 
     def update(self):
-        if self.frame == 350+100:
-            self.frame = 350
+        if self.frame == 352 + 48*2:
+            self.frame = 352
         else:
-            self.frame += 50
+            self.frame += 48
 
-    def draw(self):#351
-        self.image.clip_draw(self.frame, 385, 50, 47, 450, 300)
+    def draw(self):#352
+        self.image.clip_draw(self.frame, 384, 48, 48, 450, 300)
 
 class Shop:
     def __init__(self):
@@ -61,17 +61,19 @@ class Player:
     def __init__(self):
         self.image = load_image('character.png')
         self.x, self.y = 400, 300
+        self.frame = 0
 
 
     global dir_lr, dir_ud
     def update(self):
         self.x += dir_lr * 3
         self.y += dir_ud * 3
+        self.frame = (self.frame + 1) % 4
 
     def draw(self):
-        self.image.clip_draw(0, 230, 15, 30, self.x, self.y)
+        self.image.clip_draw(self.frame * 16, 230, 16, 30, self.x, self.y)
 
-class Monster1:
+class Monster1: # 나무 몬스터
     def __init__(self):
         self.image = load_image('log.png')
         self.x, self.y = randint(0, 800), randint(0, 600)
@@ -84,9 +86,9 @@ class Monster1:
             self.y = (1 - 0.1) * self.y + 0.1 * player.y
 
     def draw(self):
-        self.image.clip_draw(0, 0, 20, 20, self.x, self.y)
+        self.image.clip_draw(0, 32*3, 32, 32, self.x, self.y)
 
-class Monster2:
+class Monster2: # 작은 슬라임
     def __init__(self):
         self.image = load_image('frame1-mini.png')
         self.x, self.y = randint(0, 800), randint(0, 600)
@@ -136,7 +138,7 @@ open_canvas()
 
 grass = Grass()
 tree = Tree()
-#fountain = Fountain()
+fountain = Fountain()
 shop = Shop()
 portal = Portal()
 player = Player()
@@ -151,7 +153,7 @@ dir_ud = 0 # -1: down, +1: up
 while running:
     handle_events()
     portal.update()
- #   fountain.update()
+    fountain.update()
     player.update()
     monster1.update()
     monster2.update()
@@ -165,9 +167,9 @@ while running:
     monster2.draw()
     shop.draw()
     tree.draw()
- #   fountain.draw()
+    fountain.draw()
 
     update_canvas()
 
 
-    delay(0.02)
+    delay(0.05)
