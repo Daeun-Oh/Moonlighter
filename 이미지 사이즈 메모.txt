@@ -1,0 +1,2 @@
+character -> 2칸에 16
+Overworld -> 2칸에 16
