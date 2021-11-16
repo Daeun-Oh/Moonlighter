@@ -12,3 +12,6 @@ class Grass:
                 x += 10
             y += 10
             x = 0
+
+    def get_bb(self):
+        pass
