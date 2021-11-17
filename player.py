@@ -18,7 +18,7 @@ FRAMES_PER_ACTION = 6
 
 
 # Player Event
-RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, UP_DOWN, DOWN_DOWN, UP_UP, DOWN_UP = range(8)
+RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, UP_DOWN, DOWN_DOWN, UP_UP, DOWN_UP, ENTER_DOWN, ENTER_UP = range(10)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_RIGHT): RIGHT_DOWN,
@@ -28,7 +28,10 @@ key_event_table = {
     (SDL_KEYDOWN, SDLK_UP): UP_DOWN,
     (SDL_KEYDOWN, SDLK_DOWN): DOWN_DOWN,
     (SDL_KEYUP, SDLK_UP): UP_UP,
-    (SDL_KEYUP, SDLK_DOWN): DOWN_UP
+    (SDL_KEYUP, SDLK_DOWN): DOWN_UP,
+
+    (SDL_KEYDOWN, SDLK_x): ENTER_DOWN,
+    (SDL_KEYUP, SDLK_x): ENTER_UP
 }
 
 
@@ -123,6 +126,54 @@ class RunState:
         #     player.image.clip_draw(int(player.frame) * 16, 224, 16, 32, player.x, player.y)
 
 
+class AttackState:
+
+    def enter(player, event):
+        print("AttackState Entered")
+        if event == RIGHT_DOWN:
+            player.velocity_lr += RUN_SPEED_PPS
+        elif event == LEFT_DOWN:
+            player.velocity_lr -= RUN_SPEED_PPS
+        elif event == UP_DOWN:
+            player.velocity_ud += RUN_SPEED_PPS
+        elif event == DOWN_DOWN:
+            player.velocity_ud -= RUN_SPEED_PPS
+
+        elif event == RIGHT_UP:
+            player.velocity_lr -= RUN_SPEED_PPS
+        elif event == LEFT_UP:
+            player.velocity_lr += RUN_SPEED_PPS
+        elif event == UP_UP:
+            player.velocity_ud -= RUN_SPEED_PPS
+        elif event == DOWN_UP:
+            player.velocity_ud += RUN_SPEED_PPS
+        # player.dir_lr, player.dir_ud = clamp(-1, player.velocity_lr, 1), clamp(-1, player.velocity_ud, 1)
+
+    def exit(player, event):
+        pass
+#         # if event == SPACE:
+#         #     player.fire_ball()
+
+    def do(player):
+        player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
+        player.x += player.velocity_lr * game_framework.frame_time
+        player.y += player.velocity_ud * game_framework.frame_time
+        player.x = clamp(25, player.x, 800 - 25)
+        player.y = clamp(25, player.y, 600 - 25)
+
+    def draw(player):
+        # print("RunState Drawing")
+        if player.dir_lr == 1:      # 오른쪽
+            player.image.clip_draw(int(player.frame) * 32, 32, 32, 32, player.x, player.y)
+        elif player.dir_lr == -1:   # 왼쪽
+            player.image.clip_draw(int(player.frame) * 32, 0, 32, 32, player.x, player.y)
+        elif player.dir_ud == 1:    # 위
+            player.image.clip_draw(int(player.frame) * 32, 64, 32, 32, player.x, player.y)
+        elif player.dir_ud == -1:   # 아래
+            player.image.clip_draw(int(player.frame) * 32, 96, 32, 32, player.x, player.y)
+        # else:
+        #     player.image.clip_draw(int(player.frame) * 16, 224, 16, 32, player.x, player.y)
+
 
 # class SleepState:
 
@@ -147,8 +198,9 @@ class RunState:
 
 
 next_state_table = {
-    IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, UP_UP: RunState, DOWN_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState, UP_DOWN: RunState, DOWN_DOWN: RunState},
-    RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, UP_UP: IdleState, DOWN_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState, UP_DOWN: IdleState, DOWN_DOWN: IdleState},
+    IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, UP_UP: RunState, DOWN_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState, UP_DOWN: RunState, DOWN_DOWN: RunState, ENTER_DOWN: AttackState, ENTER_UP: IdleState},
+    RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, UP_UP: IdleState, DOWN_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState, UP_DOWN: IdleState, DOWN_DOWN: IdleState, ENTER_DOWN: AttackState, ENTER_UP: RunState},
+    AttackState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, UP_UP: IdleState, DOWN_UP: IdleState, RIGHT_DOWN: AttackState, LEFT_DOWN: AttackState, UP_DOWN: AttackState, DOWN_DOWN: AttackState, ENTER_UP: IdleState}
     # SleepState: {LEFT_DOWN: RunState, RIGHT_DOWN: RunState, LEFT_UP: RunState, RIGHT_UP: RunState, SPACE: IdleState}
 }
 
