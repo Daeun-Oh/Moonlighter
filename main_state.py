@@ -10,6 +10,8 @@ from player import Player
 from grass import Grass
 from portal import Portal
 from dungeon import Dungeon
+from monster1 import Monster1
+from monster2 import Monster2
 
 # portal
 import portal as p
@@ -21,12 +23,15 @@ import loading_state
 # dungeon
 
 
+
 name = "MainState"
 
 player = None
 grass = None
 portal = None
 dungeon = None
+monster1 = None
+monster2 = None
 
 
 def collide(a, b):
@@ -57,6 +62,14 @@ def enter():
         global dungeon
         dungeon = Dungeon()
         game_world.add_object(dungeon, 0)
+
+        global monster1
+        monster1 = Monster1()
+        game_world.add_object(monster1, 1)
+
+        global monster2
+        monster2 = Monster2()
+        game_world.add_object(monster2, 1)
 
     global player
     player = Player()
