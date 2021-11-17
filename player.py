@@ -4,7 +4,7 @@ from pico2d import *
 import game_world
 
 # Boy Run Speed
-PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
+PIXEL_PER_METER = (10.0 / 0.8)  # 10 pixel 80 cm
 RUN_SPEED_KMPH = 20.0  # Km / Hour
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
@@ -13,7 +13,7 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 # Player Action Speed
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-FRAMES_PER_ACTION = 8
+FRAMES_PER_ACTION = 6
 
 
 
@@ -95,7 +95,7 @@ class RunState:
             player.velocity_ud -= RUN_SPEED_PPS
         elif event == DOWN_UP:
             player.velocity_ud += RUN_SPEED_PPS
-        # player.dir_lr, player.dir_ud = clamp(-1, player.velocity, 1), clamp(-1, player.velocity, 1)
+        player.dir_lr, player.dir_ud = clamp(-1, player.velocity_lr, 1), clamp(-1, player.velocity_ud, 1)
 
     def exit(player, event):
         pass
@@ -106,18 +106,22 @@ class RunState:
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
         player.x += player.velocity_lr * game_framework.frame_time
         player.y += player.velocity_ud * game_framework.frame_time
-        # player.x = clamp(25, player.x, 1600 - 25)
+        player.x = clamp(25, player.x, 800 - 25)
+        player.y = clamp(25, player.y, 600 - 25)
 
     def draw(player):
         # print("RunState Drawing")
-        if player.dir_lr == 1:
+        if player.dir_lr == 1:      # 오른쪽
             player.image.clip_draw(int(player.frame) * 16, 192, 16, 32, player.x, player.y)
-        elif player.dir_lr == -1:
-            player.image.clip_draw(int(player.frame) * 16, 64, 16, 32, player.x, player.y)
-        elif player.dir_ud == 1:
+        elif player.dir_lr == -1:   # 왼쪽
+            player.image.clip_draw(int(player.frame) * 16, 128, 16, 32, player.x, player.y)
+        elif player.dir_ud == 1:    # 위
             player.image.clip_draw(int(player.frame) * 16, 160, 16, 32, player.x, player.y)
-        elif player.dir_ud == -1:
+        elif player.dir_ud == -1:   # 아래
             player.image.clip_draw(int(player.frame) * 16, 224, 16, 32, player.x, player.y)
+        # else:
+        #     player.image.clip_draw(int(player.frame) * 16, 224, 16, 32, player.x, player.y)
+
 
 
 # class SleepState:
@@ -157,13 +161,13 @@ class Player:
         self.x, self.y = 400, 300
         self.frame = 0
         self.event_que = []
-        self.dir_lr, self.dir_ud = 0, -1
+        self.dir_lr, self.dir_ud = 1, -1
         self.velocity_lr, self.velocity_ud = 0, 0
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
 
     def get_bb(self):
-        return self.x - 20, self.y - 40, self.x + 20, self.y + 40
+        return self.x - 8, self.y - 16, self.x + 8, self.y + 16
 
 
     def add_event(self, event):

@@ -9,11 +9,11 @@ class Grass:
 
     def draw(self):
         x, y, cnt = 0, 0, 0
-        while y <= 600:
-            while x <= 800:
-                self.image.clip_draw(0, 560, 10, 10, x % 800, y)
-                x += 10
-            y += 10
+        while y <= 60:
+            while x <= 80:
+                self.image.clip_draw(0, 560, 10, 10, x * 10, y * 10)
+                x += 1
+            y += 1
             x = 0
 
     def get_bb(self):
