@@ -8,7 +8,7 @@ import game_framework
 
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-FRAMES_PER_ACTION = 8
+FRAMES_PER_ACTION = 3
 
 # COLLIDE = 0
 # # Portal Event
@@ -45,11 +45,11 @@ class CollideState:
     def do(portal):
         global checkCollideState
 
-        if portal.frame > 20.0:
+        if portal.frame > 15.0:
             checkCollideState = 1
 
         portal.frame = portal.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time
-        print(portal.frame, checkCollideState)
+        # print(portal.frame, checkCollideState)
 
 
     def draw(portal):
@@ -64,7 +64,7 @@ class CollideState:
 class Portal:
     def __init__(self):
         self.image = load_image('purple_portal_sprite_sheet.png')
-        self.x, self.y = random.randint(0, 800 - 1), random.randint(0, 600 - 1)
+        self.x, self.y = random.randint(25, 800 - 25), random.randint(25, 600 - 25)
         self.frame = 0
         self.event_que = []
         self.cur_state = IdleState
@@ -73,7 +73,7 @@ class Portal:
         # self.checkDrawing = 0
 
     def get_bb(self):
-        return self.x - 24, self.y - 32, self.x + 24, self.y + 32
+        return self.x - 8, self.y - 20, self.x + 8, self.y + 20
 
     def add_event(self, event):
         self.event_que.insert(0, event)
