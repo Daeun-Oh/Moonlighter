@@ -6,15 +6,15 @@ from pico2d import *
 import game_framework
 import game_world
 
-# from boy import Boy
-# from grass import Grass
+from player import Player
+from grass import Grass
 # from ball import Ball, BigBall
 # from bird import Bird
 
 name = "MainState"
 
-# boy = None
-# grass = None
+player = None
+grass = None
 # balls = []
 # big_balls = []
 # bird = None
@@ -35,13 +35,13 @@ def collide(a, b):
 
 
 def enter():
-    # global boy
-    # boy = Boy()
-    # game_world.add_object(boy, 1)
+    global player
+    player = Player()
+    game_world.add_object(player, 1)
 
-    # global grass
-    # grass = Grass()
-    # game_world.add_object(grass, 0)
+    global grass
+    grass = Grass()
+    game_world.add_object(grass, 0)
 
     # global balls
     # balls = [Ball() for i in range(10)] + [BigBall() for i in range(10)]
@@ -88,7 +88,7 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
                 game_framework.quit()
         else:
-            boy.handle_event(event)
+            player.handle_event(event)
 
 
 def update():

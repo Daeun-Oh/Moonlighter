@@ -4,6 +4,9 @@ class Grass:
     def __init__(self):
         self.image = load_image('Overworld.png')
 
+    def update(self):
+        pass
+
     def draw(self):
         x, y, cnt = 0, 0, 0
         while y <= 600:
