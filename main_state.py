@@ -5,19 +5,28 @@ import os
 from pico2d import *
 import game_framework
 import game_world
-import portal as p
 
 from player import Player
 from grass import Grass
 from portal import Portal
+from dungeon import Dungeon
 
+# portal
+import portal as p
 from portal import CollideState
+
+# loading
+import loading_state
+
+# dungeon
+
 
 name = "MainState"
 
 player = None
 grass = None
 portal = None
+dungeon = None
 
 
 def collide(a, b):
@@ -35,17 +44,23 @@ def collide(a, b):
 
 
 def enter():
-    global grass
-    grass = Grass()
-    game_world.add_object(grass, 0)
+    if loading_state.go_where == -1 or loading_state.go_where == 1:
+        global grass
+        grass = Grass()
+        game_world.add_object(grass, 0)
+
+        global portal
+        portal = Portal()
+        game_world.add_object(portal, 1)
+
+    if loading_state.go_where == 0:
+        global dungeon
+        dungeon = Dungeon()
+        game_world.add_object(dungeon, 0)
 
     global player
     player = Player()
     game_world.add_object(player, 1)
-
-    global portal
-    portal = Portal()
-    game_world.add_object(portal, 1)
 
 
 
@@ -81,10 +96,10 @@ def update():
         # print("COLLISION")
         portal.cur_state = CollideState
     # print(p.checkCollideState)
-    if p.checkCollideState != 0:
+    if p.checkCollideState == 1:
         game_world.remove_object(portal)
-    # if collide(player, portal):
-
+        p.checkCollideState = 2
+        game_framework.change_state(loading_state)
 
     # fill here for collision check
     # for ball in balls:
