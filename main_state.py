@@ -8,16 +8,13 @@ import game_world
 
 from player import Player
 from grass import Grass
-# from ball import Ball, BigBall
-# from bird import Bird
+from portal import Portal
 
 name = "MainState"
 
 player = None
 grass = None
-# balls = []
-# big_balls = []
-# bird = None
+portal = None
 
 
 def collide(a, b):
@@ -35,35 +32,17 @@ def collide(a, b):
 
 
 def enter():
-    global player
-    player = Player()
-    game_world.add_object(player, 1)
-
     global grass
     grass = Grass()
     game_world.add_object(grass, 0)
 
-    # global balls
-    # balls = [Ball() for i in range(10)] + [BigBall() for i in range(10)]
-    # game_world.add_objects(balls, 1)
+    global player
+    player = Player()
+    game_world.add_object(player, 1)
 
-    # global bird
-    # bird = Bird()
-    # game_world.add_object(bird, 0)
-
-    # bird = Bird()
-    # game_world.add_object(bird, 0)
-
-    # bird = Bird()
-    # game_world.add_object(bird, 0)
-
-    # bird = Bird()
-    # game_world.add_object(bird, 0)
-
-    # bird = Bird()
-    # game_world.add_object(bird, 0)
-
-    # fill here for balls
+    global portal
+    portal = Portal()
+    game_world.add_object(portal, 2)
 
 
 
@@ -94,6 +73,10 @@ def handle_events():
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
+
+    if collide(player, portal):
+        # print("COLLISION")
+        
 
     # fill here for collision check
     # for ball in balls:
