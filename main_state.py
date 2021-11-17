@@ -5,10 +5,13 @@ import os
 from pico2d import *
 import game_framework
 import game_world
+import portal as p
 
 from player import Player
 from grass import Grass
 from portal import Portal
+
+from portal import CollideState
 
 name = "MainState"
 
@@ -42,7 +45,7 @@ def enter():
 
     global portal
     portal = Portal()
-    game_world.add_object(portal, 2)
+    game_world.add_object(portal, 1)
 
 
 
@@ -76,7 +79,12 @@ def update():
 
     if collide(player, portal):
         # print("COLLISION")
-        
+        portal.cur_state = CollideState
+    # print(p.checkCollideState)
+    if p.checkCollideState != 0:
+        game_world.remove_object(portal)
+    # if collide(player, portal):
+
 
     # fill here for collision check
     # for ball in balls:

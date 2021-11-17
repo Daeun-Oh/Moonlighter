@@ -37,7 +37,7 @@ key_event_table = {
 class IdleState:
 
     def enter(player, event):
-        print("IdleState Entered")
+        # print("IdleState Entered")
         if event == RIGHT_DOWN:
             player.velocity_lr += RUN_SPEED_PPS
         elif event == LEFT_DOWN:
@@ -70,14 +70,14 @@ class IdleState:
         #     player.add_event(SLEEP_TIMER)
 
     def draw(player):
-        print("IdleState Drawing")
+        # print("IdleState Drawing")
         player.image.clip_draw(int(player.frame) * 16, 224, 16, 32, player.x, player.y)
 
 
 class RunState:
 
     def enter(player, event):
-        print("RunState Entered")
+        # print("RunState Entered")
         if event == RIGHT_DOWN:
             player.velocity_lr += RUN_SPEED_PPS
         elif event == LEFT_DOWN:
@@ -109,7 +109,7 @@ class RunState:
         # player.x = clamp(25, player.x, 1600 - 25)
 
     def draw(player):
-        print("RunState Drawing")
+        # print("RunState Drawing")
         if player.dir_lr == 1:
             player.image.clip_draw(int(player.frame) * 16, 192, 16, 32, player.x, player.y)
         elif player.dir_lr == -1:
@@ -182,7 +182,7 @@ class Player:
 
     def draw(self):
         self.cur_state.draw(self)
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
         # self.font.draw(self.x - 60, self.y + 50, '(Time: %3.2f)' % get_time(), (255, 255, 0))
         #fill here
         # draw_rectangle(*self.get_bb())
