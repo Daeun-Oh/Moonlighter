@@ -2,19 +2,11 @@ import random
 from pico2d import *
 import game_world
 import game_framework
-# import main_state
-# from main_state import player
-# from main_state import portal
 
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 3
 
-# COLLIDE = 0
-# # Portal Event
-# event_table = {
-#     (main_state.collide(player, portal)): COLLIDE
-# }
 
 checkCollideState = 0
 
