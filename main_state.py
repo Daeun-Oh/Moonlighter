@@ -7,11 +7,13 @@ import game_framework
 import game_world
 
 from player import Player
-from grass import Grass
+from grass import Grass, RaisedGrass
 from portal import Portal
 from dungeon import Dungeon
 from monster1 import Monster1
 from monster2 import Monster2
+from fountain import Fountain
+from shop import Shop
 
 # portal
 import portal as p
@@ -28,10 +30,13 @@ name = "MainState"
 
 player = None
 grass = None
+raisedGrass = None
 portal = None
 dungeon = None
 monster1 = None
 monster2 = None
+fountain = None
+shop = None
 
 
 def collide(a, b):
@@ -54,11 +59,29 @@ def enter():
         grass = Grass()
         game_world.add_object(grass, 0)
 
+        global raisedGrass
+        raisedGrass = RaisedGrass()
+        game_world.add_object(raisedGrass, 0)
+
+        global fountain
+        fountain = Fountain()
+        game_world.add_object(fountain, 1)
+
+        global shop
+        shop = Shop()
+        game_world.add_object(shop, 1)
+
         global portal
         portal = Portal()
         game_world.add_object(portal, 1)
 
     if loading_state.go_where == 0:
+        game_world.remove_object(grass)
+        game_world.remove_object(raisedGrass)
+        game_world.remove_object(portal)
+        game_world.remove_object(fountain)
+        game_world.remove_object(shop)
+
         global dungeon
         dungeon = Dungeon()
         game_world.add_object(dungeon, 0)
@@ -105,6 +128,7 @@ def update():
     for game_object in game_world.all_objects():
         game_object.update()
 
+    # 포탈 - 플레이어
     if collide(player, portal):
         # print("COLLISION")
         portal.cur_state = CollideState
@@ -114,19 +138,29 @@ def update():
         p.checkCollideState = 2
         game_framework.change_state(loading_state)
 
-    # fill here for collision check
-    # for ball in balls:
-    #     if collide(boy, ball):
-    #         if collide(boy, ball):
-    #             # print("COLLISION")
-    #             balls.remove(ball)  # 충돌을 검사해야 할 공 리스트(balls)에서 제거
-    #             game_world.remove_object(ball)  # 게임 월드 내에서 제거
+    # 분수 - 플레이어
+    if collide(player, fountain):
+        if player.dir_lr == 1:      # 오른쪽
+            player.x -= 2
+        elif player.dir_lr == -1:   # 왼쪽
+            player.x += 2
+        elif player.dir_ud == 1:    # 위
+            player.y -= 2
+        elif player.dir_ud == -1:   # 아래
+            player.y += 2
 
-    # for ball in balls:
-    #     if collide(grass, ball):
-    #         ball.stop()
+    # 상점 - 플레이어
+    if collide(player, shop):
+        if player.dir_lr == 1:      # 오른쪽
+            player.x -= 2
+        elif player.dir_lr == -1:   # 왼쪽
+            player.x += 2
+        elif player.dir_ud == 1:    # 위
+            player.y -= 2
+        elif player.dir_ud == -1:   # 아래
+            player.y += 2
 
-    # delay(0.9)
+    
 
 
 def draw():
