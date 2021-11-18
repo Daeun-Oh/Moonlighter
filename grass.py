@@ -4,6 +4,9 @@ class Grass:
     def __init__(self):
         self.image = load_image('Overworld.png')
 
+    def get_bb(self):
+        pass
+
     def update(self):
         pass
 
@@ -16,5 +19,16 @@ class Grass:
             y += 1
             x = 0
 
+class RaisedGrass:
+    def __init__(self):
+        self.image = load_image('Overworld.png')
+        self.x, self.y = 48, 500
+
     def get_bb(self):
         pass
+
+    def update(self):
+        pass
+
+    def draw(self):
+        self.image.clip_draw(64, 328, 48, 104, self.x, self.y)
