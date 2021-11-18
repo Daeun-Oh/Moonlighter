@@ -12,7 +12,7 @@ go_where = -1 	# 0 - go to dungeon / 1 - go to map
 def enter():
 	print("Loading")
 	global image
-	image = load_image('loading_mang.png')
+	image = load_image('loading.png')
 
 def exit():
 	global image
