@@ -11,7 +11,7 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 class Monster1: # 나무 몬스터
     def __init__(self):
         self.image = load_image('log.png')
-        self.x, self.y = random.randint(0, 800), random.randint(0, 600)
+        self.x, self.y = random.randint(400, 800 - 25), random.randint(300, 600 - 25)
 
     global player
     def update(self):
