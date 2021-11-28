@@ -160,6 +160,10 @@ def update():
         elif player.dir_ud == -1:   # 아래
             player.y += 2
 
+    # 몬스터1 - 플레이어
+    if loading_state.go_where == 1 and collide(player, monster1):
+        if player.cur_state == AttackState:
+            monster1.HP -= 10
     
 
 

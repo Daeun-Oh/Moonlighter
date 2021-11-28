@@ -12,6 +12,10 @@ class Monster1: # 나무 몬스터
     def __init__(self):
         self.image = load_image('log.png')
         self.x, self.y = random.randint(400, 800 - 25), random.randint(300, 600 - 25)
+        self.HP = 100
+
+    def get_bb(self):
+        return self.x - 10, self.y - 10, self.x + 10, self.y + 10
 
     global player
     def update(self):
@@ -19,6 +23,8 @@ class Monster1: # 나무 몬스터
         # if dist < 100**2:
         #     self.x = (1 - 0.8) * self.x + 0.8 * m.player.x  # 0.1
         #     self.y = (1 - 0.8) * self.y + 0.8 * m.player.y
+        if self.HP == 0:
+            game_world.remove_object(self)
 
     def draw(self):
         self.image.clip_draw(0, 32*3, 32, 32, self.x, self.y)
