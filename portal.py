@@ -3,6 +3,12 @@ from pico2d import *
 import game_world
 import game_framework
 
+import collision
+import server
+
+# 여기서 해도 되나
+import loading_state
+
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 3
@@ -54,9 +60,10 @@ class CollideState:
 # }
 
 class Portal:
+
     def __init__(self):
         self.image = load_image('purple_portal_sprite_sheet.png')
-        self.x, self.y = random.randint(25, 800 - 25), random.randint(25, 600 - 25)
+        self.x, self.y = 350, 350 # random.randint(25, 800 - 25), random.randint(25, 600 - 25)
         self.frame = 0
         self.event_que = []
         self.cur_state = IdleState
@@ -71,6 +78,8 @@ class Portal:
         self.event_que.insert(0, event)
 
     def update(self):
+        global checkCollideState
+
         self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
@@ -78,6 +87,16 @@ class Portal:
             self.cur_state = next_state_table[self.cur_state][event]
             self.cur_state.enter(self, event)
         # self.frame = (self.frame + 1) % 8
+
+        # 포탈 - 플레이어
+        if collision.collide(server.player, self):
+            # print("COLLISION")
+            self.cur_state = CollideState
+        # print(checkCollideState)
+        if checkCollideState == 1:
+            game_world.remove_object(self)
+            checkCollideState = 2
+            game_framework.change_state(loading_state)
 
     def draw(self):
         global checkCollideState
