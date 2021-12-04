@@ -18,7 +18,6 @@ from shop import Shop
 import server
 
 # portal
-import portal as p
 from portal import CollideState
 
 # loading
@@ -49,11 +48,11 @@ def enter():
         game_world.add_object(server.portal, 1)
 
     if loading_state.go_where == 0:
-        game_world.remove_object(grass)
-        game_world.remove_object(raisedGrass)
-        game_world.remove_object(portal)
-        game_world.remove_object(fountain)
-        game_world.remove_object(shop)
+        game_world.remove_object(server.grass)
+        game_world.remove_object(server.raisedGrass)
+        game_world.remove_object(server.portal)
+        game_world.remove_object(server.fountain)
+        game_world.remove_object(server.shop)
 
         server.dungeon = Dungeon()
         game_world.add_object(server.dungeon, 0)
@@ -97,15 +96,6 @@ def update():
     for game_object in game_world.all_objects():
         game_object.update()
 
-    # 포탈 - 플레이어
-    # if collide(player, portal):
-    #     # print("COLLISION")
-    #     portal.cur_state = CollideState
-    # # print(p.checkCollideState)
-    # if p.checkCollideState == 1:
-    #     game_world.remove_object(portal)
-    #     p.checkCollideState = 2
-    #     game_framework.change_state(loading_state)
 
     # # 상점 - 플레이어
     # if collide(player, shop):
