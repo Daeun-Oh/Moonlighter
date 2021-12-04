@@ -23,13 +23,13 @@ class Fountain:
 
         if collision.collide(self, server.player):
             if server.player.dir_lr == 1:      # 오른쪽
-                server.player.x = 400 - 24 - 2
+                server.player.x -= 2
             elif server.player.dir_lr == -1:   # 왼쪽
-                server.player.x = 400 + 24 + 2
+                server.player.x += 2
             elif server.player.dir_ud == 1:    # 위
-                server.player.y = 400 - 6 - 2
+                server.player.y -= 2
             elif server.player.dir_ud == -1:   # 아래
-                server.player.y = 400 + 18 + 2
+                server.player.y += 2
 
     def draw(self):#352
         self.image.clip_draw(int(self.frame) * 48 + 352, 384, 48, 48, self.x, self.y)
